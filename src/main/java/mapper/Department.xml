@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.DepartmentMapper">
+    <select id="selectAll" resultType="pojo.Department">
+        select * FROM crm_department
+    </select>
+
+    <select id="selectCount" resultType="int">
+        select count(*) from crm_department
+    </select>
+
+    <select id="selectByPage" resultType="pojo.Department" parameterType="int">
+        select * from crm_department limit #{page},10
+    </select>
+
+    <select id="findDep" resultType="pojo.Department" parameterType="String">
+        select * from crm_department where depName=#{depName}
+    </select>
+    
+    <select id="addDep" parameterType="String" resultType="String">
+        insert into crm_department(depName,isCancel) values(#{depName},0)
+    </select>
+
+    <select id="findLast" resultType="pojo.Department">
+        select * from crm_department where id=(select max(id) from crm_department)
+    </select>
+
+    <delete id="deleteDep" parameterType="int">
+        delete from crm_department where id=#{id}
+    </delete>
+
+    <update id="updateDep" parameterType="pojo.Department">
+        update crm_department set depName=#{depName} where id=#{id}
+    </update>
+
+</mapper>

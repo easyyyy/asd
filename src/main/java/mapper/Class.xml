@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ClassMapper">
+    
+    <resultMap id="Class" type="pojo.Class">
+        <id column="ID" property="id"/>
+        <result column="className" property="className"/>
+        <result column="beginTime" property="beginTime"/>
+        <result column="endTime" property="endTime"/>
+        <result column="state" property="state"/>
+        <result column="totalCount" property="totalCount"/>
+        <result column="goCount" property="goCount"/>
+        <result column="leaveCount" property="leaveCount"/>
+        <result column="lessonTypeId" property="lessonTypeId"/>
+
+        <association property="course" javaType="Course">
+            <id column="lessonTypeId" property="ID"/>
+            <result column="lessonName" property="lessonName"/>
+            <result column="lessocost" property="lessoncost"/>
+            <result column="totalTime" property="totalTime"/>
+            <result column="remark" property="remark"/>
+        </association>
+    </resultMap>
+    <select id="selectAll" resultType="pojo.Class">
+--         select crm_class.ID,className,beginTime,endTime,state,totalCount,goCount,leaveCount,lessonTypeId,crm_lessontype.ID,lessonName FROM crm_class,crm_lessontype where  lessonTypeId=crm_lessontype.ID
+--         select * from crm_class
+          select * from crm_class
+    </select>
+
+    <select id="getCourseName" resultType="pojo.Course">
+        select * from crm_lessontype where crm_lessontype.ID = #{id}
+    </select>
+
+    <select id="findByCond" parameterType="map" resultType="pojo.Class">
+        select * from crm_class
+        <where>
+            <if test="className!=null">
+                className = #{className}
+            </if>
+            <if test="state!=null">
+                and state = #{state}
+            </if>
+            <!--<if test="time != null">-->
+                <!--and #{time} between beginTime and endTime-->
+            <!--</if>-->
+        </where>
+    </select>
+
+    <select id="findByState" parameterType="string" resultType="pojo.Class">
+        select * from crm_class where state = #{state}
+
+    </select>
+
+    <insert id="addClass" parameterType="pojo.Class">
+        insert into crm_class(className,lessonTypeId,beginTime,endTime,state,totalCount,goCount,leaveCount,remark) values (#{className},#{lessonTypeId},#{beginTime},#{endTime},#{state},#{totalCount},#{goCount},#{leaveCount},#{remark})
+    </insert>
+
+    <update id="updateClass" parameterType="pojo.Class">
+        update crm_class set className=#{className},lessonTypeId=#{lessonTypeId}, beginTime=#{beginTime}, endTime=#{endTime}, state=#{state}, totalCount=#{totalCount}, goCount=#{goCount}, leaveCount=#{leaveCount},remark=#{remark} where id=#{id}
+    </update>
+
+    <delete id="deleteClass" parameterType="integer">
+        delete from crm_class where id=#{id}
+    </delete>
+
+</mapper>

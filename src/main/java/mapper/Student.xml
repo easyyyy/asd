@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.StudentMapper">
+    <select id="selectAll" resultType="pojo.Student">
+        select * FROM crm_student
+    </select>
+
+    <select id="getClassName" resultType="pojo.Class">
+        select * from crm_class where ID=#{id}
+    </select>
+
+    <select id="findStudent" resultType="pojo.Student">
+        select * from crm_student where stuName like "%"#{stuName}"%" and classid=#{id}
+    </select>
+
+    <select id="findStudentByStuName" resultType="pojo.Student">
+        select * from crm_student where stuName like "%"#{stuName}"%"
+    </select>
+
+    <select id="findStudentByClassId" resultType="pojo.Student">
+        select * from crm_student where classid = #{id}
+    </select>
+
+    <select id="StudentLast" resultType="pojo.Student">
+        select * from crm_student where id=(select max(id) from crm_student)
+    </select>
+
+    <insert id="addStudent" parameterType="pojo.Student">
+        insert into crm_student values (#{id},#{stuName},#{stuCode},#{stuSex},#{referid},#{classid},#{beginTime},#{jobTime},#{stuState},#{checkLevel},#{remark})
+    </insert>
+    
+    <delete id="deleteStudent" parameterType="String">
+        delete from crm_student where stuCode=#{stuCode}
+    </delete>
+
+    <update id="updateStudent" parameterType="pojo.Student">
+        update crm_student set stuName=#{stuName},stuSex=#{stuSex},referid=#{referid},classid=#{classid},beginTime=#{beginTime},jobTime=#{jobTime},stuState=#{stuState},checkLevel=#{checkLevel},remark=#{remark} where stuCode=#{stuCode}
+    </update>
+</mapper>
