@@ -314,17 +314,17 @@
 		<div class="panel panel-default">
 		<!-- 搜索部分 -->
 			<div class="panel-body">
-				<form class="form-inline" method="get" action="course/list.action">
+				<form class="form-inline" method="get" action="/course/find">
 					<div class="form-group">
 						<label for="courseName">课程名称</label> 
-						<input type="text" class="form-control" id="lessonname" value="" name="lessonname">
+						<input type="text" class="form-control" id="lessonname" value="" name="lessonName">
 					</div>
 					 
 					<button type="submit" class="btn btn-primary">查询</button>
 				</form>
 			</div>
 		</div>
-		<a href="course/list.action#" class="btn btn-primary" data-toggle="modal" data-target="#newPostDialog" onclick="clearPost()">新建</a>
+		<a class="btn btn-primary" data-toggle="modal" data-target="#newPostDialog" onclick="clearPost()">新建</a>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -350,8 +350,8 @@
 									<td>${c.totalTime}</td>
 									<td>${c.remark}</td>
 									<td>
-										<a href="course/list.action#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#courseEditDialog" onclick="editcourse(1)">修改</a>
-										<a href="course/list.action#" class="btn btn-danger btn-xs" onclick="deletecourse(1)">删除</a>
+										<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#courseEditDialog" onclick="editcourse(${c.ID})">修改</a>
+										<a class="btn btn-danger btn-xs" onclick="deletecourse(${c.ID})">删除</a>
 									</td>
 								</tr>
 							</c:forEach>
@@ -418,7 +418,7 @@
 						    课程名称
 						</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="new_courseName" placeholder="课程名称" name="lessonname">
+							<input type="text" class="form-control" id="new_courseName" placeholder="课程名称" name="lessonName">
 						</div>
 					</div> 
 					<div class="form-group">
@@ -434,7 +434,7 @@
 						    总课时
 						</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="new_total" placeholder="总课时" name="total">
+							<input type="text" class="form-control" id="new_total" placeholder="总课时" name="totalTime">
 						</div>
 					</div> 
 					<div class="form-group">
@@ -472,7 +472,7 @@
 						课程名称
 						</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="edit_courseName" placeholder="课程名称" name="name">
+							<input type="text" class="form-control" id="edit_courseName" placeholder="课程名称" name="lessonName">
 						</div>
 					</div>
 					<div class="form-group">
@@ -488,7 +488,7 @@
 						    总课时
 						</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" id="edit_total" placeholder="总课时" name="total">
+							<input type="text" class="form-control" id="edit_total" placeholder="总课时" name="totalTime">
 						</div>
 					</div> 
 					<div class="form-group">
@@ -538,59 +538,93 @@ $(function(){
 	}
 	// 创建课程
 	function createcourse() {
-	$.post("course/create.action",
-	$("#new_course_form").serialize(),function(data){
-	        if(data =="OK"){
-	            alert("课程创建成功！");
-	            window.location.reload();
-	        }else{
-	            alert("课程创建失败！");
-	            window.location.reload();
-	        }
-	    });
+	// $.post("course/create.action",
+	// $("#new_course_form").serialize(),function(data){
+	//         if(data =="OK"){
+	//             alert("课程创建成功！");
+	//             window.location.reload();
+	//         }else{
+	//             alert("课程创建失败！");
+	//             window.location.reload();
+	//         }
+	//     });
+
+		$.ajax({
+			type:"get",
+			url:"course/add",
+			data:$("#new_course_form").serialize(),
+			success:function(data) {
+
+				alert("课程信息更新成功！");
+				window.location.reload();
+			}
+		});
 	}
 	// 通过id获取修改的课程信息
 	function editcourse(id) {
 	    $.ajax({
 	        type:"get",
-	        url:"course/getLessonTypeById.action",
+	        url:"course/getLessonTypeById",
 	        data:{"id":id},
 	        success:function(data) {
-	            $("#edit_courseid").val(data.lessontypeid);
-	            $("#edit_courseName").val(data.lessonname); 
-	            $("#edit_lessoncost").val(data.lessoncost);
-	            $("#edit_total").val(data.total);
-	            $("#edit_remark").val(data.remark);
+	            // $("#edit_courseid").val(data.lessontypeid);
+	            // $("#edit_courseName").val(data.lessonname);
+	            // $("#edit_lessoncost").val(data.lessoncost);
+	            // $("#edit_total").val(data.total);
+	            // $("#edit_remark").val(data.remark);
 	        }
 	    });
 	}
     // 执行修改课程操作
 	function updatecourse() {
-		$.post("course/update.action",
-		 $("#edit_course_form").serialize(),
-		  function(data){
-			if(data =="OK"){
+		// $.post("course/update.action",
+		//  $("#edit_course_form").serialize(),
+		//   function(data){
+		// 	if(data =="OK"){
+		// 		alert("课程信息更新成功！");
+		// 		window.location.reload();
+		// 	}else{
+		// 		alert("课程信息更新失败！");
+		// 		window.location.reload();
+		// 	}
+		// });
+
+		$.ajax({
+			type:"get",
+			url:"course/update",
+			data:$("#edit_course_form").serialize(),
+			success:function () {
 				alert("课程信息更新成功！");
 				window.location.reload();
-			}else{
-				alert("课程信息更新失败！");
-				window.location.reload();
 			}
-		});
+		})
 	}
 	// 删除课程
 	function deletecourse(id) {
 	 if(confirm('确实要删除该课程吗?')) {
-	 $.post("course/delete.action",{"id":id},
-	  function(data){
-	            if(data =="OK"){
-	                alert("课程删除成功！");
-	                window.location.reload();
-	            }else{
-	                alert("删除课程失败！");
-	                window.location.reload();
-	            }
-	        });
+	 // $.post("course/delete.action",{"id":id},
+	 //  function(data){
+	 //            if(data =="OK"){
+	 //                alert("课程删除成功！");
+	 //                window.location.reload();
+	 //            }else{
+	 //                alert("删除课程失败！");
+	 //                window.location.reload();
+	 //            }
+	 //        });
+		 $.ajax({
+			 type:"get",
+			 url:"course/delete",
+			 data:{"id":id},
+			 success:function(){
+				alert("课程删除成功！");
+				window.location.reload();
+			 },
+			 error:function () {
+				alert("删除课程失败！");
+				window.location.reload();
+			 }
+		 })
 	    }
 	}
 </script>

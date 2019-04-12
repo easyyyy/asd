@@ -7,6 +7,17 @@ public class Course {
     private int totalTime;
     private String remark;
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "ID=" + ID +
+                ", lessonName='" + lessonName + '\'' +
+                ", lessoncost=" + lessoncost +
+                ", totalTime=" + totalTime +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
+
     public int getID() {
         return ID;
     }

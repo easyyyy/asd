@@ -7,4 +7,19 @@
         select * FROM crm_lessontype
     </select>
 
+    <select id="find" parameterType="string" resultType="pojo.Course">
+        select * from crm_lessontype where lessonName like "%"#{lessonName}"%"
+    </select>
+
+    <insert id="add" parameterType="pojo.Course">
+        insert into crm_lessontype(lessonName,lessoncost,totalTime,remark) values(#{lessonName},#{lessoncost},#{totalTime},#{remark})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from crm_lessontype where ID=#{id}
+    </delete>
+
+    <update id="update" parameterType="pojo.Course">
+        update crm_lessontype set lessonName=#{lessonName},lessoncost=#{lessoncost},totalTime=#{totalTime},remark=#{remark} where ID=#{ID}
+    </update>
 </mapper>
