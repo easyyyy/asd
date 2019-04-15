@@ -314,20 +314,23 @@
 		<div class="panel panel-default">
 		<!-- 搜索部分 -->
 			<div class="panel-body">
-				<form class="form-inline" method="get" action="crmstaff/list.action">
+				<form class="form-inline" method="get" action="/staff/find">
 					<div class="form-group">
 						<label for="crmstaffName">员工名称</label> 
-						<input type="text" class="form-control" id="crmstaffName" value="" name="staffname">
+						<input type="text" class="form-control" id="crmstaffName" value="" name="staffName">
 					</div>
 					 <div class="form-group">
 						<label for="crmpostid">职务</label>  
 						 <select class="form-control" id="crmpostid" name="postid">
 						    <option value="" selected="selected">---请选择---</option>
+							 <c:forEach items="${postList}" var="p">
+								<option value="${p.postID}">${p.postName}</option>
+							 </c:forEach>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="crmtime">时间</label>  
-						<input type="datetime-local" class="form-control" id="crmtime" placeholder="开班时间" name="time">
+						<input type="date" class="form-control" id="crmtime" placeholder="开班时间" name="time">
 					</div>
 					<button type="submit" class="btn btn-primary">查询</button>
 				</form>
@@ -361,8 +364,8 @@
 									<td>${s.onDutyDate}</td>
 									<td>${s.post.postName}</td>
 									<td>
-										<a href="crmstaff/list.action#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#crmstaffEditDialog" onclick="editcrmstaff(1)">修改</a>
-										<a href="crmstaff/list.action#" class="btn btn-danger btn-xs" onclick="deletecrmstaff(1)">删除</a>
+										<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#crmstaffEditDialog" onclick="editcrmstaff(${s.staffID})">修改</a>
+										<a class="btn btn-danger btn-xs" onclick="deletecrmstaff(${s.staffID})">删除</a>
 									</td>
 
 
@@ -446,7 +449,7 @@
 						    员工名称
 						</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="new_crmstaffName" placeholder="员工名称" name="staffname">
+							<input type="text" class="form-control" id="new_crmstaffName" placeholder="员工名称" name="staffName">
 						</div>
 						<label for="new_begintime" class="col-sm-2 control-label">
 						    性别
@@ -469,7 +472,7 @@
 						    入职日期
 						</label>
 						<div class="col-sm-4">
-						  <input type="datetime-local" class="form-control" id="new_ondutydate" placeholder="入职日期" name="ondutydate">
+						  <input type="datetime-local" class="form-control" id="new_ondutydate" placeholder="入职日期" name="onDutyDate">
 						</div>
 					</div>
 					<div class="form-group">
@@ -477,28 +480,31 @@
 						   登录名
 						</label>
 						<div class="col-sm-4">
-							<input type="number" class="form-control" id="new_loginname" placeholder="登录名" name="loginname">
+							<input type="number" class="form-control" id="new_loginname" placeholder="登录名" name="loginName">
 						</div>
 						<label for="new_loginpwd" class="col-sm-2 control-label">
 						   登录密码
 						</label>
 						<div class="col-sm-4">
-							<input type="number" class="form-control" id="new_loginpwd" placeholder="登录密码" name="loginpwd">
+							<input type="number" class="form-control" id="new_loginpwd" placeholder="登录密码" name="loginPwd">
 						</div>
 					  </div>
 					  <div class="form-group">
-						<label for="new_staffcode" class="col-sm-2 control-label">
-						  员工编号
-						</label>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" id="new_staffcode" placeholder="员工编号" name="staffcode">
-						</div> 
+						<%--<label for="new_staffcode" class="col-sm-2 control-label">--%>
+						  <%--员工编号--%>
+						<%--</label>--%>
+						<%--<div class="col-sm-4">--%>
+							<%--<input type="text" class="form-control" id="new_staffcode" placeholder="员工编号" name="staffCode">--%>
+						<%--</div> --%>
 						<label for="new_lessontype" class="col-sm-2 control-label">
 						    职务
 						</label>
 						<div class="col-sm-4">
-							<select class="form-control" id="new_postid" name="postid">
+							<select class="form-control" id="new_postid" name="postID">
 							   <option value="0">---请选择---</option>
+								<c:forEach items="${postList}" var="p">
+									<option value="${p.postID}">${p.postName}</option>
+								</c:forEach>
 							</select>
 						</div>
 					</div> 
@@ -529,7 +535,7 @@
 						    员工名称
 						</label>
 						<div class="col-sm-4">
-							<input type="text" class="form-control" id="edit_crmstaffName" placeholder="员工名称" name="staffname">
+							<input type="text" class="form-control" id="edit_crmstaffName" placeholder="员工名称" name="staffName">
 						</div>
 						<label for="edit_gender" class="col-sm-2 control-label">
 						    性别
@@ -552,7 +558,7 @@
 						    入职日期
 						</label>
 						<div class="col-sm-4">
-						  <input type="datetime-local" class="form-control" id="edit_ondutydate" placeholder="入职日期" name="ondutydate">
+						  <input type="datetime-local" class="form-control" id="edit_ondutydate" placeholder="入职日期" name="onDutyDate">
 						</div>
 					</div>
 					<div class="form-group">
@@ -560,28 +566,32 @@
 						   登录名
 						</label>
 						<div class="col-sm-4">
-							<input type="number" class="form-control" id="edit_loginname" placeholder="登录名" name="loginname">
+							<input type="number" class="form-control" id="edit_loginname" placeholder="登录名" name="loginName">
 						</div>
 						<label for="edit_loginpwd" class="col-sm-2 control-label">
 						   登录密码
 						</label>
 						<div class="col-sm-4">
-							<input type="number" class="form-control" id="edit_loginpwd" placeholder="登录密码" name="loginpwd">
+							<input type="number" class="form-control" id="edit_loginpwd" placeholder="登录密码" name="loginPwd">
 						</div>
 					  </div>
 					  <div class="form-group">
-						<label for="edit_staffcode" class="col-sm-2 control-label">
-						  员工编号
-						</label>
-						<div class="col-sm-4">
-							<input type="text" class="form-control" id="edit_staffcode" placeholder="员工编号" name="staffcode">
-						</div> 
+						<%--<label for="edit_staffcode" class="col-sm-2 control-label">--%>
+						  <%--员工编号--%>
+						<%--</label>--%>
+						<%--<div class="col-sm-4">--%>
+							<%--<input type="text" class="form-control" id="edit_staffcode" placeholder="员工编号" name="staffcode">--%>
+						<%--</div> --%>
 						<label for="edit_postid" class="col-sm-2 control-label">
 						    职务
 						</label>
 						<div class="col-sm-4">
 							<select class="form-control" id="edit_postid" name="postid">
 							   <option value="0">---请选择---</option>
+
+								<c:forEach items="${postList}" var="p">
+									<option value="${p.postID}">${p.postName}</option>
+								</c:forEach>
 							</select>
 						</div>
 					</div> 
@@ -628,64 +638,102 @@ $(function(){
 	}
 	// 创建员工
 	function createcrmstaff() {
-	$.Post("crmstaff/create.action",
-	$("#new_crmstaff_form").serialize(),function(data){
-	        if(data =="OK"){
-	            alert("员工创建成功！");
-	            window.location.reload();
-	        }else{
-	            alert("员工创建失败！");
-	            window.location.reload();
-	        }
-	    });
+	// $.Post("crmstaff/create.action",
+	// $("#new_crmstaff_form").serialize(),function(data){
+	//         if(data =="OK"){
+	//             alert("员工创建成功！");
+	//             window.location.reload();
+	//         }else{
+	//             alert("员工创建失败！");
+	//             window.location.reload();
+	//         }
+	//     });
+		$.ajax({
+			type:"get",
+			url:"staff/add",
+			data:$("#new_crmstaff_form").serialize(),
+			success:function() {
+				alert("员工创建成功！");
+				window.location.reload();
+			},error:function () {
+				alert("员工创建失败！");
+				window.location.reload();
+			}
+		});
+
 	}
 	// 通过id获取修改的员工信息
 	function editcrmstaff(id) {
 	    $.ajax({
 	        type:"get",
-	        url:"crmstaff/getStaffById.action",
+	        url:"staff/getStaffById",
 	        data:{"id":id},
 	        success:function(data) {
-	            $("#edit_staffid").val(data.staffid);
-	            $("#edit_crmstaffName").val(data.staffname);
-	            $("#edit_gender").val(data.gender); 
-	            $("#edit_birthday").val(data.birthday);
-	            $("#edit_ondutydate").val(data.ondutydate);
-	            $("#edit_loginname").val(data.loginname);
-	            $("#edit_loginpwd").val(data.loginpwd);
-	            $("#edit_staffcode").val(data.staffcode);
-	            $("#edit_postid").val(data.postid);
+	            // $("#edit_staffid").val(data.staffid);
+	            // $("#edit_crmstaffName").val(data.staffname);
+	            // $("#edit_gender").val(data.gender);
+	            // $("#edit_birthday").val(data.birthday);
+	            // $("#edit_ondutydate").val(data.ondutydate);
+	            // $("#edit_loginname").val(data.loginname);
+	            // $("#edit_loginpwd").val(data.loginpwd);
+	            // $("#edit_staffcode").val(data.staffcode);
+	            // $("#edit_postid").val(data.postid);
 	        }
 	    });
 	}
     // 执行修改员工操作
 	function updatecrmstaff() {
-		$.Post("crmstaff/update.action",
-		 $("#edit_crmstaff_form").serialize(),
-		  function(data){
-			if(data =="OK"){
-				alert("员工信息更新成功！");
+		// $.Post("crmstaff/update.action",
+		//  $("#edit_crmstaff_form").serialize(),
+		//   function(data){
+		// 	if(data =="OK"){
+		// 		alert("员工信息更新成功！");
+		// 		window.location.reload();
+		// 	}else{
+		// 		alert("员工信息更新失败！");
+		// 		window.location.reload();
+		// 	}
+		// });
+		$.ajax({
+			type:"get",
+			url:"staff/update",
+			data:$("#edit_crmstaff_form").serialize(),
+			success:function() {
+				alert("员工更新成功！");
 				window.location.reload();
-			}else{
-				alert("员工信息更新失败！");
+			},error:function () {
+				alert("员工更新失败！");
 				window.location.reload();
 			}
 		});
 	}
 	// 删除员工
 	function deletecrmstaff(id) {
-	 if(confirm('确实要删除该员工吗?')) {
-	 $.Post("crmstaff/delete.action",{"id":id},
-	  function(data){
-	            if(data =="OK"){
-	                alert("员工删除成功！");
-	                window.location.reload();
-	            }else{
-	                alert("删除员工失败！");
-	                window.location.reload();
-	            }
-	        });
-	    }
+		if (confirm('确实要删除该员工吗?')) {
+			// $.Post("crmstaff/delete.action",{"id":id},
+			//  function(data){
+			//            if(data =="OK"){
+			//                alert("员工删除成功！");
+			//                window.location.reload();
+			//            }else{
+			//                alert("删除员工失败！");
+			//                window.location.reload();
+			//            }
+			//        });
+			//    }
+			$.ajax({
+				type: "get",
+				url: "staff/delete",
+				data: {id: id},
+				success: function () {
+					alert("员工删除成功！");
+					window.location.reload();
+				}, error: function () {
+					alert("员工删除失败！");
+					window.location.reload();
+				}
+			});
+		}
 	}
 </script>
 

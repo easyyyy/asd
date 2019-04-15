@@ -1,13 +1,17 @@
 package controller;
 
 
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import pojo.Post;
 import pojo.Staff;
+import service.PostService;
 import service.StaffService;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +23,9 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
+    @Autowired
+    private PostService postService;
+
     @RequestMapping("/AllStaff")
     public ModelAndView listStaff(){
         ModelAndView mav = new ModelAndView();
@@ -26,7 +33,10 @@ public class StaffController {
         for (Staff s:staffs){
             s.setPost(staffService.getPostName(s.getPostID()));
         }
+        List<Post> postList = postService.selectAll();
+        mav.addObject("postList",postList);
         mav.addObject("staffs",staffs);
+
         mav.setViewName("staff");
         return mav;
     }
@@ -69,4 +79,33 @@ public class StaffController {
 //    public String toLogin() {
 //        return "login";
 //    }
+    @RequestMapping("/staff/find")
+    @ResponseBody
+    public ModelAndView find(String staffName,Integer postID,String time){
+        System.out.println(staffName+","+postID+","+time);
+        if (staffName.equals("") && postID == null && time.equals("")){
+            return new ModelAndView("redirect:/AllStaff");
+        }
+        ModelAndView mav = new ModelAndView();
+        List<Staff> staffs = staffService.findStaff(staffName,postID);
+        List<Post> postList = postService.selectAll();
+        mav.addObject("postList",postList);
+        mav.addObject("staffs",staffs);
+        mav.setViewName("staff");
+        return mav;
+    }
+
+    @RequestMapping("/staff/delete")
+    @ResponseBody
+    public void deleteStaff(Integer id){
+        System.out.println(id);
+        staffService.deleteStaff(id);
+    }
+
+    @RequestMapping("/staff/add")
+    @ResponseBody
+    public void addStaff(Staff staff){
+        System.out.println(staff);
+
+    }
 }

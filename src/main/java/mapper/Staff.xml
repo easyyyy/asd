@@ -15,4 +15,24 @@
         select * from crm_staff where loginName=#{loginName} and loginPwd=#{loginPwd}
     </select>
 
+    <select id="findStaff" parameterType="map" resultType="pojo.Staff">
+        select * from crm_staff
+        <where>
+            <if test="postId!=null">
+                postID=#{postId}
+            </if>
+            <if test="staffName!=null">
+                staffName like "%"#{staffName}"%"
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteStaff" parameterType="integer">
+        delete from crm_staff where staffID=#{id}
+    </delete>
+
+    <!--<insert id="addStaff" parameterType="pojo.Staff">-->
+        <!--insert into crm_staff(staffName,depID) values (#{postName},#{depID})-->
+    <!--</insert>-->
+
 </mapper>

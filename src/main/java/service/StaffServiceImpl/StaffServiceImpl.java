@@ -30,4 +30,14 @@ public class StaffServiceImpl implements StaffService {
         staff.setLoginPwd(loginPwd);
         return staffMapper.login(staff);
     }
+
+    @Override
+    public List<Staff> findStaff(String staffName, Integer postId) {
+        return staffMapper.findStaff(staffName, postId);
+    }
+
+    @Override
+    public void deleteStaff(Integer id) {
+        staffMapper.deleteStaff(id);
+    }
 }

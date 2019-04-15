@@ -47,11 +47,13 @@ public class CourseController {
     }
 
     @RequestMapping("course/delete")
+    @ResponseBody
     public void deleteCourse(Integer id){
         courseService.delete(id);
     }
 
     @RequestMapping("course/getLessonTypeById")
+    @ResponseBody
     public void getLessonTypeById(Integer id){
         editId = id;
     }

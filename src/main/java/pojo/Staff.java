@@ -10,8 +10,8 @@ public class Staff {
     private String staffName;
     private String gender;
     private String email;
-    private Date birthday;
-    private Date onDutyDate;
+    private String birthday;
+    private String onDutyDate;
     private int postID;
     private String state;
     private Post post;
@@ -90,19 +90,19 @@ public class Staff {
         this.email = email;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-    public Date getOnDutyDate() {
+    public String getOnDutyDate() {
         return onDutyDate;
     }
 
-    public void setOnDutyDate(Date onDutyDate) {
+    public void setOnDutyDate(String onDutyDate) {
         this.onDutyDate = onDutyDate;
     }
 
